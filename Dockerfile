@@ -37,15 +37,18 @@ RUN apt-get -y dist-upgrade
 RUN pip3 install transforms3d
 
 # f1tenth gym
-RUN git clone https://github.com/f1tenth/f1tenth_gym
-RUN cd f1tenth_gym && \
-    pip3 install -e .
+RUN git clone https://github.com/s-hliao/usps_gym.git
+RUN cd usps_gym && pip3 install -e /usps_gym
+
+# copy in USPS repo
+RUN mkdir -p /sim_ws/src/USPS
+RUN cd /sim_ws/src && git clone https://github.com/Zedonkay/USPS.git
 
 # ros2 gym bridge
-RUN mkdir -p sim_ws/src/f1tenth_gym_ros
-COPY . /sim_ws/src/f1tenth_gym_ros
+RUN mkdir -p /sim_ws/src/usps_docker
+COPY . /sim_ws/src/usps_docker
 RUN source /opt/ros/foxy/setup.bash && \
-    cd sim_ws/ && \
+    cd /sim_ws && \
     apt-get update --fix-missing && \
     rosdep install -i --from-path src --rosdistro foxy -y && \
     colcon build

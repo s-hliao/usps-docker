@@ -26,10 +26,10 @@ This installation guide will be split into instruction for installing the ROS 2 
 - Clone the repo into the workspace:
   ```bash
   cd $HOME/sim_ws/src
-  git clone https://github.com/f1tenth/f1tenth_gym_ros
+  git clone https://github.com/f1tenth/usps-docker
   ```
 - Update correct parameter for path to map file:
-  Go to `sim.yaml` [https://github.com/f1tenth/f1tenth_gym_ros/blob/main/config/sim.yaml](https://github.com/f1tenth/f1tenth_gym_ros/blob/main/config/sim.yaml) in your cloned repo, change the `map_path` parameter to point to the correct location. It should be `'<your_home_dir>/sim_ws/src/f1tenth_gym_ros/maps/levine'`
+  Go to `sim.yaml` [https://github.com/s-hliao/usps-docker/blob/main/config/sim.yaml](https://github.com/f1tenth/usps-docker/blob/main/config/sim.yaml) in your cloned repo, change the `map_path` parameter to point to the correct location. It should be `'<your_home_dir>/sim_ws/src/usps-docker/maps/levine'`
 - Install dependencies with rosdep:
   ```bash
   source /opt/ros/foxy/setup.bash
@@ -37,6 +37,9 @@ This installation guide will be split into instruction for installing the ROS 2 
   rosdep install -i --from-path src --rosdistro foxy -y
   ```
 - Build the workspace: ```colcon build```
+
+
+#
 
 ## With an NVIDIA gpu:
 
@@ -51,12 +54,12 @@ This installation guide will be split into instruction for installing the ROS 2 
 1. Clone this repo
 2. Build the docker image by:
 ```bash
-$ cd f1tenth_gym_ros
-$ docker build -t f1tenth_gym_ros -f Dockerfile .
+$ cd usps-docker
+$ docker build -t usps-docker -f Dockerfile .
 ```
-3. To run the containerized environment, start a docker container by running the following. (example showned here with nvidia-docker support). By running this, the current directory that you're in (should be `f1tenth_gym_ros`) is mounted in the container at `/sim_ws/src/f1tenth_gym_ros`. Which means that the changes you make in the repo on the host system will also reflect in the container.
+3. To run the containerized environment, start a docker container by running the following. (example showned here with nvidia-docker support). By running this, the current directory that you're in (should be `usps-docker`) is mounted in the container at `/sim_ws/src/usps-docker`. Which means that the changes you make in the repo on the host system will also reflect in the container.
 ```bash
-$ rocker --nvidia --x11 --volume .:/sim_ws/src/f1tenth_gym_ros -- f1tenth_gym_ros
+$ rocker --nvidia --x11 --volume .:/sim_ws/src/usps-docker -- usps-docker
 ```
 
 ## Without an NVIDIA gpu:
@@ -76,7 +79,7 @@ docker-compose up
 ``` 
 3. In a separate terminal, run the following, and you'll have the a bash session in the simulation container. `tmux` is available for convenience.
 ```bash
-docker exec -it f1tenth_gym_ros-sim-1 /bin/bash
+docker exec -it usps-docker-sim-1 /bin/bash
 ```
 4. In your browser, navigate to [http://localhost:8080/vnc.html](http://localhost:8080/vnc.html), you should see the noVNC logo with the connect button. Click the connect button to connect to the session.
 
@@ -87,14 +90,14 @@ docker exec -it f1tenth_gym_ros-sim-1 /bin/bash
 ```bash
 $ source /opt/ros/foxy/setup.bash
 $ source install/local_setup.bash
-$ ros2 launch f1tenth_gym_ros gym_bridge_launch.py
+$ ros2 launch usps-docker gym_bridge_launch.py
 ```
 A rviz window should pop up showing the simulation either on your host system or in the browser window depending on the display forwarding you chose.
 
 You can then run another node by creating another bash session in `tmux`.
 
 # Configuring the simulation
-- The configuration file for the simulation is at `f1tenth_gym_ros/config/sim.yaml`.
+- The configuration file for the simulation is at `usps-docker/config/sim.yaml`.
 - Topic names and namespaces can be configured but is recommended to leave uncahnged.
 - The map can be changed via the `map_path` parameter. You'll have to use the full path to the map file in the container. The map follows the ROS convention. It is assumed that the image file and the `yaml` file for the map are in the same directory with the same name. See the note below about mounting a volume to see where to put your map file.
 - The `num_agent` parameter can be changed to either 1 or 2 for single or two agent racing.
