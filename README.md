@@ -17,8 +17,8 @@ This installation guide will be split into instruction for installing the ROS 2 
 - **ROS 2** Follow the instructions [here](https://docs.ros.org/en/foxy/Installation.html) to install ROS 2 Foxy.
 - **F1TENTH Gym**
   ```bash
-  git clone https://github.com/f1tenth/f1tenth_gym
-  cd f1tenth_gym && pip3 install -e .
+  git clone https://github.com/s-hliao/usps-gym
+  cd usps-gym && pip3 install -e .
   ```
 
 **Installing the simulation:**
@@ -38,28 +38,22 @@ This installation guide will be split into instruction for installing the ROS 2 
   ```
 - Build the workspace: ```colcon build```
 
-
-#
-
-## With an NVIDIA gpu:
-
-**Install the following dependencies:**
-
-- **Docker** Follow the instructions [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/) to install Docker. A short tutorial can be found [here](https://docs.docker.com/get-started/) if you're not familiar with Docker. If you followed the post-installation steps you won't have to prepend your docker and docker-compose commands with sudo.
-- **nvidia-docker2**, follow the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) if you have a support GPU. It is also possible to use Intel integrated graphics to forward the display, see details instructions from the Rocker repo. If you are on windows with an NVIDIA GPU, you'll have to use WSL (Windows Subsystem for Linux). Please refer to the guide [here](https://developer.nvidia.com/cuda/wsl), [here](https://docs.nvidia.com/cuda/wsl-user-guide/index.html), and [here](https://dilililabs.com/zh/blog/2021/01/26/deploying-docker-with-gpu-support-on-windows-subsystem-for-linux/).
-- **rocker** [https://github.com/osrf/rocker](https://github.com/osrf/rocker). This is a tool developed by OSRF to run Docker images with local support injected. We use it for GUI forwarding. If you're on Windows, WSL should also support this.
+## Docker Installation (no GPU):
 
 **Installing the simulation:**
 
-1. Clone this repo
-2. Build the docker image by:
+1. Create a workspace: ```cd $HOME && mkdir -p sim_ws/src```
+2. Clone the repo into the workspace:
+  ```bash
+  cd $HOME/sim_ws/src
+  git clone https://github.com/s-hliao/usps-docker
+  git clone https://github.com/s-hliao/usps-gym
+  git clone https://github.com/Zedonkay/USPS
+  ```
+3. Build the docker image by:
 ```bash
 $ cd usps-docker
-$ docker build -t usps-docker -f Dockerfile .
-```
-3. To run the containerized environment, start a docker container by running the following. (example showned here with nvidia-docker support). By running this, the current directory that you're in (should be `usps-docker`) is mounted in the container at `/sim_ws/src/usps-docker`. Which means that the changes you make in the repo on the host system will also reflect in the container.
-```bash
-$ rocker --nvidia --x11 --volume .:/sim_ws/src/usps-docker -- usps-docker
+$ docker build -t usps_docker -f Dockerfile .
 ```
 
 ## Without an NVIDIA gpu:
@@ -71,15 +65,15 @@ If your system does not support nvidia-docker2, noVNC will have to be used to fo
 - Additionally you'll need **docker-compose**. Follow the instruction [here](https://docs.docker.com/compose/install/) to install docker-compose.
 
 **Installing the simulation:**
-
-1. Clone this repo 
+1. Replace the line with your relevant path - <path_to_USPS_package_on_host>:/sim_ws/src/USPS to your volumes field in `src/usps-docker/docker-compose.yml up` for the sim container.
 2. Bringup the novnc container and the sim container with docker-compose:
 ```bash
-docker-compose up
+cd $HOME && mkdir -p sim_ws
+docker-compose -f src/usps-docker/docker-compose.yml up
 ``` 
 3. In a separate terminal, run the following, and you'll have the a bash session in the simulation container. `tmux` is available for convenience.
 ```bash
-docker exec -it usps-docker-sim-1 /bin/bash
+docker exec -it usps-docker_sim_1 /bin/bash
 ```
 4. In your browser, navigate to [http://localhost:8080/vnc.html](http://localhost:8080/vnc.html), you should see the noVNC logo with the connect button. Click the connect button to connect to the session.
 

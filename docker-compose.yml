@@ -23,10 +23,10 @@
 version: '3'
 services:
   sim:
-    image: f1tenth_gym_ros
+    image: usps-docker-container
     build: ./
     volumes: 
-      - .:/sim_ws/src/f1tenth_gym_ros
+      - ./src/USPS:/sim_ws/src/USPS
     environment:
       - DISPLAY=novnc:0.0
     networks:

@@ -37,12 +37,8 @@ RUN apt-get -y dist-upgrade
 RUN pip3 install transforms3d
 
 # f1tenth gym
-RUN git clone https://github.com/s-hliao/usps_gym.git
-RUN cd usps_gym && pip3 install -e /usps_gym
-
-# copy in USPS repo
-RUN mkdir -p /sim_ws/src/USPS
-RUN cd /sim_ws/src && git clone https://github.com/Zedonkay/USPS.git
+RUN git clone https://github.com/s-hliao/usps-gym.git
+RUN cd usps-gym && pip3 install -e /usps-gym
 
 # ros2 gym bridge
 RUN mkdir -p /sim_ws/src/usps_docker
