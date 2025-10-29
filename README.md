@@ -53,7 +53,7 @@ This installation guide will be split into instruction for installing the ROS 2 
 3. Build the docker image by:
 ```bash
 $ cd usps-docker
-$ docker build -t usps_docker -f Dockerfile .
+$ docker build -t usps-docker -f Dockerfile .
 ```
 
 ## Without an NVIDIA gpu:
