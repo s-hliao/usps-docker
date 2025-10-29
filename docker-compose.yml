@@ -23,7 +23,7 @@
 version: '3'
 services:
   sim:
-    image: usps-docker-container
+    image: usps-docker
     build: ./
     volumes: 
       - ./src/USPS:/sim_ws/src/USPS
