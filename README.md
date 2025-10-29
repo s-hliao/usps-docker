@@ -68,7 +68,7 @@ If your system does not support nvidia-docker2, noVNC will have to be used to fo
 1. Replace the line with your relevant path - <path_to_USPS_package_on_host>:/sim_ws/src/USPS to your volumes field in `src/usps-docker/docker-compose.yml up` for the sim container.
 2. Bringup the novnc container and the sim container with docker-compose:
 ```bash
-cd $HOME && mkdir -p sim_ws
+cd $HOME
 docker-compose -f src/usps-docker/docker-compose.yml up
 ``` 
 3. In a separate terminal, run the following, and you'll have the a bash session in the simulation container. `tmux` is available for convenience.
