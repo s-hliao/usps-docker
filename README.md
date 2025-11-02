@@ -155,3 +155,18 @@ There are multiple ways to launch your own agent to control the vehicles.
 
 - The first one is creating a new package for your agent in the `/sim_ws` workspace inside the sim container. After launch the simulation, launch the agent node in another bash session while the sim is running.
 - The second one is to create a new ROS 2 container for you agent node. Then create your own package and nodes inside. Launch the sim container and the agent container both. With default networking configurations for `docker`, the behavior is to put The two containers on the same network, and they should be able to discover and talk to each other on different topics. If you're using noVNC, create a new service in `docker-compose.yml` for your agent node. You'll also have to put your container on the same network as the sim and novnc containers.
+
+## Accessing the AWS
+
+# On AWS
+1. Sign in using slack email and password.
+2. Run `vncserver -geometry 1920x1080 :1`
+
+# On Local
+1. Copy awskey.pem into the current directory (usps-docker)
+2. `chmod 600 awskey.pem`
+3. `chmod +x ./novnc_launch.sh`
+4. Change the ip in the `novnc.conf` file to match the aws server ip.
+5. Run `./novnc_launch.sh`
+6. Go to `localhost:6080/vnc.html`
+7. Sign in using vnc password from slack.
